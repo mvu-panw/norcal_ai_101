@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorCal AI 101 — Prompt Journey</title>
+  <link rel="icon" type="image/png" href="assets/images/PAN-Color.png" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=1" />
+</head>
+<body>
+  <nav>
+    <img src="assets/images/PAN-Color.png" alt="Palo Alto Networks" class="logo" />
+    <a class="site-title" href="index.html">NorCal AI 101</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="nvl72.html">Inside the NVL72</a>
+      <a href="resources.html">Resources</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <h1>The Prompt Journey</h1>
+      <p>What happens between typing a prompt into Claude Code and seeing <code>index.html</code> appear on your laptop.</p>
+    </div>
+
+    <div class="banner">
+      <strong>The key idea:</strong> Claude Code runs on your laptop. The model runs in a data center. The model never touches your laptop. It sends back <em>requests</em> to read or write files, and Claude Code carries them out locally, with your permission.
+    </div>
+
+    <p class="section-label">One round trip</p>
+    <div class="card" style="margin-bottom:40px;">
+      <div class="flow">
+        <div class="flow-node">
+          <div class="fn-where">Your laptop</div>
+          <div class="fn-title">Claude Code builds the request</div>
+          <div class="fn-desc">System prompt, tool definitions, CLAUDE.md, the conversation so far, and your new prompt.</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-node">
+          <div class="fn-where">Internet</div>
+          <div class="fn-title">Encrypted HTTPS</div>
+          <div class="fn-desc">One TLS-encrypted request to Anthropic's Messages API.</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-node">
+          <div class="fn-where">Front door</div>
+          <div class="fn-title">Auth, limits, routing</div>
+          <div class="fn-desc">The request is authenticated, checked against rate limits, and routed to a model-serving cluster.</div>
+        </div>
+        <div class="flow-arrow">&rarr;</div>
+        <div class="flow-node hot">
+          <div class="fn-where">AI factory</div>
+          <div class="fn-title">Inference</div>
+          <div class="fn-desc">Tokenize, <strong>prefill</strong> (read the whole prompt), then <strong>decode</strong> (write the reply one token at a time). <a class="src" href="nvl72.html">inside the rack &rarr;</a></div>
+        </div>
+      </div>
+      <div class="flow-return">&larr; The reply streams back over the same connection as server-sent events, a few tokens at a time &larr;</div>
+    </div>
+
+    <p class="section-label">Step by step</p>
+    <div class="card" style="margin-bottom:40px;">
+      <ol class="steps">
+        <li><div><strong>You type a prompt.</strong> "Make a one-page static site for this AI 101 session with an agenda and a countdown timer."</div></li>
+        <li><div><strong>Claude Code packages it.</strong> Your few words become thousands of tokens. The package includes Claude Code's own instructions, a description of every tool it can use (Read, Write, Edit, Bash, and others), your project's CLAUDE.md, and the conversation so far. Run <code>/context</code> to see the total.</div></li>
+        <li><div><strong>It goes to the data center.</strong> The request is sent as an encrypted HTTPS POST to Anthropic's API. After authentication and rate limiting, it lands on a cluster that serves the model.</div></li>
+        <li><div><strong>The model reads, then writes.</strong> The text is split into tokens. The model reads all of them in one parallel pass (<em>prefill</em>), then generates its reply one token at a time (<em>decode</em>), streaming each token back as it's produced.</div></li>
+        <li><div><strong>The reply is a tool call, not a file.</strong> Instead of plain text, the model returns a structured <code>tool_use</code> block: "call Write with this path and this content."</div></li>
+        <li><div><strong>Your laptop does the work.</strong> Claude Code asks your permission, writes the file to your disk, and sends the result back as a new request. That new request includes everything from step 2 plus the latest exchange.</div></li>
+        <li><div><strong>Repeat until done.</strong> The loop continues until the model answers in plain text with no more tool calls. Even a "simple" site can take several round trips.</div></li>
+      </ol>
+    </div>
+
+    <p class="section-label">What actually goes over the wire</p>
+    <div class="two-col" style="margin-bottom:40px;">
+      <div class="card">
+        <h2>The request (simplified)</h2>
+        <pre class="code">{
+  <span class="k">"model"</span>: "claude-...",
+  <span class="k">"stream"</span>: true,
+  <span class="k">"system"</span>: "You are Claude Code... <span class="c">// + CLAUDE.md</span>",
+  <span class="k">"tools"</span>: [
+    { "name": "Write", "input_schema": {...} },
+    { "name": "Read",  ... },
+    { "name": "Bash",  ... }
+  ],
+  <span class="k">"messages"</span>: [
+    { "role": "user",
+      "content": "Make a one-page static site..." }
+  ]
+}</pre>
+      </div>
+      <div class="card">
+        <h2>The reply (simplified)</h2>
+        <pre class="code">{
+  <span class="k">"role"</span>: "assistant",
+  <span class="k">"content"</span>: [
+    { "type": "text",
+      "text": "I'll create the page." },
+    { "type": "<span class="k">tool_use</span>",
+      "name": "Write",
+      "input": {
+        "file_path": "index.html",
+        "content": "&lt;!DOCTYPE html&gt;..."
+      } }
+  ],
+  <span class="k">"stop_reason"</span>: "tool_use"
+}</pre>
+        <p class="note">Claude Code then sends a <code>tool_result</code> ("file created") in the next request, and the loop continues.</p>
+      </div>
+    </div>
+
+    <p class="section-label">The agent loop for the demo (illustrative)</p>
+    <div class="card" style="margin-bottom:40px;">
+      <div class="table-wrap">
+        <table class="scoreboard-table">
+          <tr><th>Round trip</th><th>Model asks for</th><th>Laptop does</th><th>Sent back next time</th></tr>
+          <tr><td>1</td><td><code>Write</code> index.html</td><td>Asks permission, writes the file</td><td>"File created"</td></tr>
+          <tr><td>2</td><td><code>Write</code> styles.css</td><td>Writes the stylesheet</td><td>"File created"</td></tr>
+          <tr><td>3</td><td><code>Bash</code> <code>open index.html</code></td><td>Opens the page in a browser</td><td>Command output</td></tr>
+          <tr><td>4</td><td>Nothing: plain-text summary</td><td>Shows the summary</td><td>Loop ends</td></tr>
+        </table>
+      </div>
+      <p class="note">The exact steps vary from run to run. The model decides which tools to call based on what it sees.</p>
+    </div>
+
+    <div class="two-col" style="margin-bottom:40px;">
+      <div class="card">
+        <h2>Stays on your laptop</h2>
+        <div class="prose">
+          <ul>
+            <li>Your files, until a tool reads one</li>
+            <li>Running the tools: writing files, running commands</li>
+            <li>Permission decisions (you approve each action)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Goes to the data center</h2>
+        <div class="prose">
+          <ul>
+            <li>Your prompt and the whole conversation</li>
+            <li>Claude Code's instructions, tool definitions, and CLAUDE.md</li>
+            <li>The contents of any file the model reads</li>
+            <li>The output of any command it runs</li>
+          </ul>
+        </div>
+        <p class="note">For a security audience, this is the key question: anything a tool reads becomes part of the prompt. <a class="src" href="https://code.claude.com/docs/en/data-usage" target="_blank" rel="noopener">Claude Code data usage</a></p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:40px;">
+      <h2>Why resending everything isn't as wasteful as it sounds</h2>
+      <div class="prose">
+        <p>Every round trip resends the whole context, which can be tens of thousands of tokens. Reprocessing all of it each time would be slow and expensive.</p>
+        <p><strong>Prompt caching</strong> fixes this. The data center keeps the model's working memory of the unchanged beginning of the request (the <em>KV cache</em>) and reuses it on the next turn, so only the new tokens need full processing. <a class="src" href="https://docs.claude.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">prompt caching docs</a></p>
+        <p>The next page shows where that cache lives: in GPU memory, inside the rack.</p>
+      </div>
+      <div class="cta-row">
+        <a href="nvl72.html" class="btn btn-primary" style="width:auto;">Inside the NVL72 &rarr;</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    NorCal AI 101 &middot; How a prompt travels through an AI factory. Hardware details describe how LLM inference typically works, not a specific provider's deployment.
+  </footer>
+</body>
+</html>

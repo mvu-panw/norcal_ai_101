@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorCal AI 101 — Inside the NVL72</title>
+  <link rel="icon" type="image/png" href="assets/images/PAN-Color.png" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=1" />
+</head>
+<body>
+  <nav>
+    <img src="assets/images/PAN-Color.png" alt="Palo Alto Networks" class="logo" />
+    <a class="site-title" href="index.html">NorCal AI 101</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="journey.html">Prompt Journey</a>
+      <a href="resources.html">Resources</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <h1>Inside the NVL72</h1>
+      <p>How a prompt like yours is processed on an NVIDIA GB300 NVL72, a rack-scale system that runs 72 GPUs as one.</p>
+    </div>
+
+    <div class="banner">
+      <strong>A note on accuracy:</strong> Anthropic serves Claude on three chip platforms: Google TPUs, Amazon Trainium, and NVIDIA GPUs. <a class="src" href="https://www.anthropic.com/news/expanding-our-use-of-google-cloud-tpus-and-services" target="_blank" rel="noopener">source</a> Which hardware handles any single request isn't public. This page shows how LLM inference works on an NVL72, not where a particular prompt went.
+    </div>
+
+    <p class="section-label">Four networks in an AI data center</p>
+    <div class="card" style="margin-bottom:40px;">
+      <div class="table-wrap">
+        <table class="scoreboard-table">
+          <tr><th>Network</th><th>What it carries</th><th>Your prompt's role</th></tr>
+          <tr><td>Front-end (in-band)</td><td>User and API traffic, SSH, DNS, scheduling, container registries. Standard Ethernet, "north-south".</td><td><strong style="color:var(--cyan)">Your request arrives and your reply leaves here.</strong></td></tr>
+          <tr><td>Compute fabric</td><td>GPU-to-GPU traffic. NVLink inside the rack; InfiniBand or Spectrum-X Ethernet between racks. Lossless and low-jitter, "east-west".</td><td>Where the model's layers exchange data while processing your tokens.</td></tr>
+          <tr><td>Storage</td><td>High-throughput access to shared storage: model weights, datasets, checkpoints.</td><td>Model weights load from here before serving starts.</td></tr>
+          <tr><td>Out-of-band (OOB)</td><td>Remote power, serial console, temperature and power sensors. Works even when a server is down.</td><td>None. It keeps the hardware running.</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <p class="section-label">The path into the rack</p>
+    <div class="card" style="margin-bottom:40px;">
+      <ol class="steps">
+        <li><div><strong>Front-end network.</strong> The request reaches a serving node over Ethernet, typically through a <strong>BlueField DPU</strong>, which offloads networking, security, and storage tasks from the CPU.</div></li>
+        <li><div><strong>Grace CPU.</strong> The host side of the serving software turns text into tokens, schedules work, and <strong>batches</strong> your request together with many other users' requests.</div></li>
+        <li><div><strong>Blackwell Ultra GPUs.</strong> The model's weights are split across many GPUs. Each layer's work is divided among them, and they exchange partial results over <strong>NVLink</strong> at every layer.</div></li>
+        <li><div><strong>Back out.</strong> Each new token is turned back into text and streamed out through the front-end network to your laptop.</div></li>
+      </ol>
+    </div>
+
+    <p class="section-label">GB300 NVL72 at a glance</p>
+    <div class="card" style="margin-bottom:40px;">
+      <div class="rack-wrap">
+        <div>
+          <div class="rack" aria-label="Simplified NVL72 rack: 10 compute trays, 9 NVLink switch trays, 8 compute trays">
+            <div class="tray compute"><span>Compute 1</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 2</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 3</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 4</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 5</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 6</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 7</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 8</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 9</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 10</span><span>4 GPU</span></div>
+            <div class="tray switch"><span>NVLink switch 1</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 2</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 3</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 4</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 5</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 6</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 7</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 8</span><span>&harr;</span></div>
+            <div class="tray switch"><span>NVLink switch 9</span><span>&harr;</span></div>
+            <div class="tray compute"><span>Compute 11</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 12</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 13</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 14</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 15</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 16</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 17</span><span>4 GPU</span></div>
+            <div class="tray compute"><span>Compute 18</span><span>4 GPU</span></div>
+          </div>
+          <div class="rack-legend"><span class="lg-c">Compute tray: 2 Grace + 4 GPUs</span><span class="lg-s">NVLink switch tray</span></div>
+          <p class="note">Simplified. Power shelves and management are omitted.</p>
+        </div>
+        <div>
+          <div class="stat-grid">
+            <div class="stat"><div class="v">72</div><div class="l">Blackwell Ultra GPUs</div></div>
+            <div class="stat"><div class="v">36</div><div class="l">Arm-based Grace CPUs</div></div>
+            <div class="stat"><div class="v">130 TB/s</div><div class="l">NVLink bandwidth across the rack's single 72-GPU domain</div></div>
+            <div class="stat"><div class="v">20 TB</div><div class="l">HBM3E GPU memory (279 GB per GPU); up to 37 TB of fast memory per rack</div></div>
+            <div class="stat"><div class="v">576 TB/s</div><div class="l">Total GPU memory bandwidth</div></div>
+            <div class="stat"><div class="v">1.44 EF</div><div class="l">FP4 compute (exaFLOPS, sparse)</div></div>
+          </div>
+          <div class="prose" style="margin-top:18px;">
+            <p><strong>Why it matters:</strong> a frontier model is too large for one GPU. NVLink lets all 72 GPUs share work as if they were one giant accelerator, so the constant layer-by-layer traffic stays inside the rack instead of crossing the slower data center network.</p>
+            <p>The rack is <strong>fully liquid-cooled</strong>.</p>
+          </div>
+          <p class="note">Source: NVIDIA GB300 NVL72 datasheet. <a class="src" href="https://www.nvidia.com/en-us/data-center/gb300-nvl72/" target="_blank" rel="noopener">product page</a></p>
+        </div>
+      </div>
+    </div>
+
+    <p class="section-label">Two phases of inference</p>
+    <div class="two-col" style="margin-bottom:24px;">
+      <div class="card">
+        <h2>1 &middot; Prefill: reading the prompt</h2>
+        <div class="prose">
+          <ul>
+            <li>All of your input tokens are processed <strong>at once, in parallel</strong>.</li>
+            <li>This phase is <strong>compute-bound</strong>: it keeps the GPU's tensor cores busy.</li>
+            <li>It produces the <strong>KV cache</strong>, the model's working memory of your context, stored in HBM.</li>
+            <li>A long prompt (like Claude Code's whole context) means a longer wait before the first token: <em>time to first token</em>.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h2>2 &middot; Decode: writing the reply</h2>
+        <div class="prose">
+          <ul>
+            <li>Output is generated <strong>one token at a time</strong>. Each token depends on all the ones before it.</li>
+            <li>Every step re-reads the model's weights and the KV cache, so this phase is <strong>memory-bandwidth-bound</strong>. That's what the 576 TB/s is for.</li>
+            <li>This is why replies <strong>stream in</strong> word by word.</li>
+            <li>The KV cache grows with every token, eating into the 20 TB of HBM.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:40px;">
+      <h2>How AI factories squeeze out more tokens</h2>
+      <div class="prose">
+        <ul>
+          <li><strong>Batching:</strong> many users' requests share each pass through the GPUs, so the weights read from memory serve many requests at once.</li>
+          <li><strong>Prompt caching:</strong> the KV cache for a repeated prefix is kept and reused. This is why Claude Code can resend its whole context every turn without reprocessing all of it. <a class="src" href="journey.html">see the prompt journey</a></li>
+          <li><strong>Disaggregated serving:</strong> NVIDIA Dynamo runs prefill and decode on separate groups of GPUs, since they stress different resources. <a class="src" href="https://www.nvidia.com/en-us/ai/dynamo/" target="_blank" rel="noopener">Dynamo</a></li>
+          <li><strong>Lower precision:</strong> FP4 numbers take a quarter of the memory of FP16, so more of the model and cache fits in HBM and moves faster.</li>
+          <li><strong>Scale-out:</strong> racks connect to each other over InfiniBand (Quantum-X800) or Spectrum-X Ethernet. This matters most for training; a single inference job often fits in one rack.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:40px;">
+      <h2>What's next: Vera Rubin NVL72</h2>
+      <div class="prose">
+        <p>NVIDIA's next rack keeps the 72-GPU design: <strong>72 Rubin GPUs and 36 Vera CPUs</strong>, <strong>20.7 TB of HBM4</strong>, <strong>216 TB/s</strong> of NVLink 6 bandwidth, ConnectX-9 SuperNICs, and BlueField-4 DPUs. NVIDIA projects up to one-tenth the cost per million tokens of GB200 NVL72.</p>
+      </div>
+      <p class="note">Source: NVIDIA Vera Rubin NVL72 datasheet. Performance figures are NVIDIA projections.</p>
+    </div>
+  </main>
+
+  <footer>
+    NorCal AI 101 &middot; How a prompt travels through an AI factory. Hardware details describe how LLM inference typically works, not a specific provider's deployment.
+  </footer>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorCal AI 101 — Resources</title>
+  <link rel="icon" type="image/png" href="assets/images/PAN-Color.png" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=1" />
+</head>
+<body>
+  <nav>
+    <img src="assets/images/PAN-Color.png" alt="Palo Alto Networks" class="logo" />
+    <a class="site-title" href="index.html">NorCal AI 101</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="journey.html">Prompt Journey</a>
+      <a href="nvl72.html">Inside the NVL72</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <h1>Resources</h1>
+      <p>Official documentation behind each part of the talk. Links checked November 12, 2026.</p>
+    </div>
+
+    <p class="section-label">The prompt journey (Anthropic)</p>
+    <div class="link-grid">
+      <a class="link-card" href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">
+        <span class="lc-title">Claude Code overview</span>
+        <span class="lc-desc">The agentic coding tool used in the demo.</span>
+        <span class="lc-meta">code.claude.com</span>
+      </a>
+      <a class="link-card" href="https://code.claude.com/docs/en/data-usage" target="_blank" rel="noopener">
+        <span class="lc-title">Claude Code data usage</span>
+        <span class="lc-desc">What Claude Code sends, and how it's handled and retained.</span>
+        <span class="lc-meta">code.claude.com</span>
+      </a>
+      <a class="link-card" href="https://docs.claude.com/en/api/messages" target="_blank" rel="noopener">
+        <span class="lc-title">Messages API</span>
+        <span class="lc-desc">The request and response format behind every round trip.</span>
+        <span class="lc-meta">docs.claude.com</span>
+      </a>
+      <a class="link-card" href="https://docs.claude.com/en/docs/agents-and-tools/tool-use/overview" target="_blank" rel="noopener">
+        <span class="lc-title">Tool use</span>
+        <span class="lc-desc">How tool_use and tool_result blocks drive the agent loop.</span>
+        <span class="lc-meta">docs.claude.com</span>
+      </a>
+      <a class="link-card" href="https://docs.claude.com/en/docs/build-with-claude/streaming" target="_blank" rel="noopener">
+        <span class="lc-title">Streaming</span>
+        <span class="lc-desc">Server-sent events: why replies arrive token by token.</span>
+        <span class="lc-meta">docs.claude.com</span>
+      </a>
+      <a class="link-card" href="https://docs.claude.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">
+        <span class="lc-title">Prompt caching</span>
+        <span class="lc-desc">Reusing a repeated prefix so it isn't reprocessed every turn.</span>
+        <span class="lc-meta">docs.claude.com</span>
+      </a>
+      <a class="link-card" href="https://www.anthropic.com/news/expanding-our-use-of-google-cloud-tpus-and-services" target="_blank" rel="noopener">
+        <span class="lc-title">Anthropic's compute platforms</span>
+        <span class="lc-desc">Anthropic uses Google TPUs, Amazon Trainium, and NVIDIA GPUs.</span>
+        <span class="lc-meta">anthropic.com</span>
+      </a>
+    </div>
+
+    <p class="section-label">Inside the AI factory (NVIDIA)</p>
+    <div class="link-grid">
+      <a class="link-card" href="https://www.nvidia.com/en-us/data-center/gb300-nvl72/" target="_blank" rel="noopener">
+        <span class="lc-title">GB300 NVL72</span>
+        <span class="lc-desc">The Blackwell Ultra rack-scale system covered in the talk.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/data-center/gb200-nvl72/" target="_blank" rel="noopener">
+        <span class="lc-title">GB200 NVL72</span>
+        <span class="lc-desc">The previous-generation Grace Blackwell rack.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/data-center/nvlink/" target="_blank" rel="noopener">
+        <span class="lc-title">NVLink and NVLink Switch</span>
+        <span class="lc-desc">The GPU-to-GPU interconnect that makes 72 GPUs act as one.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization/" target="_blank" rel="noopener">
+        <span class="lc-title">Mastering LLM inference optimization</span>
+        <span class="lc-desc">Prefill, decode, KV cache, batching, and model parallelism explained.</span>
+        <span class="lc-meta">developer.nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/ai/dynamo/" target="_blank" rel="noopener">
+        <span class="lc-title">NVIDIA Dynamo</span>
+        <span class="lc-desc">Inference serving framework with disaggregated prefill and decode.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/networking/products/data-processing-unit/" target="_blank" rel="noopener">
+        <span class="lc-title">BlueField DPUs</span>
+        <span class="lc-desc">Offload networking, security, and storage from the host CPU.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/networking/products/infiniband/" target="_blank" rel="noopener">
+        <span class="lc-title">NVIDIA InfiniBand</span>
+        <span class="lc-desc">Scale-out compute fabric between racks.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/networking/spectrumx/" target="_blank" rel="noopener">
+        <span class="lc-title">Spectrum-X Ethernet</span>
+        <span class="lc-desc">AI-optimized Ethernet for multi-tenant AI clouds.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://docs.nvidia.com/dgx-superpod/reference-architecture-scalable-infrastructure-h100/latest/index.html" target="_blank" rel="noopener">
+        <span class="lc-title">DGX SuperPOD reference architecture</span>
+        <span class="lc-desc">How compute, storage, and management networks fit together.</span>
+        <span class="lc-meta">docs.nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/glossary/ai-factory/" target="_blank" rel="noopener">
+        <span class="lc-title">What is an AI factory?</span>
+        <span class="lc-desc">NVIDIA's definition of the term used throughout the talk.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    NorCal AI 101 &middot; How a prompt travels through an AI factory. Hardware details describe how LLM inference typically works, not a specific provider's deployment.
+  </footer>
+</body>
+</html>

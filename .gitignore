@@ -1,0 +1,6 @@
+# Local reference only — not ours to republish (NVIDIA course content, datasheets, stencils, PANW docs)
+NVIDIA Datasheets/
+NVIDIA Stencils/
+nvidia_course_content/
+palo_docs/
+.DS_Store

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorCal AI 101 — Home</title>
+  <link rel="icon" type="image/png" href="assets/images/PAN-Color.png" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=1" />
+</head>
+<body>
+  <nav>
+    <img src="assets/images/PAN-Color.png" alt="Palo Alto Networks" class="logo" />
+    <a class="site-title" href="index.html">NorCal AI 101</a>
+    <div class="nav-links">
+      <a href="journey.html">Prompt Journey</a>
+      <a href="nvl72.html">Inside the NVL72</a>
+      <a href="resources.html">Resources</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <h1>What Happens When You Hit Enter?</h1>
+      <p>A 30-minute tour of one AI prompt, from a laptop to an AI factory and back.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:32px;">
+      <p style="font-weight:600;font-size:1.15rem;margin-bottom:14px;color:var(--cyan);">The 30-second version</p>
+      <div class="prose">
+        <ul>
+          <li><strong>The app is local, the model is remote.</strong> An AI coding agent like Claude Code runs on your laptop. The model that does the thinking runs on GPU or accelerator clusters in a data center.</li>
+          <li><strong>Everything travels as text over HTTPS.</strong> Your prompt, the agent's instructions, and the file contents it has read are packaged into one encrypted request. The answer streams back a few tokens at a time.</li>
+          <li><strong>The model doesn't touch your files.</strong> It sends back requests like "write <code>index.html</code> with this content." Your laptop runs them and reports the result. A simple task can take several of these round trips.</li>
+          <li><strong>In the data center, one model spans a whole rack.</strong> A frontier model is too big for one GPU. Systems like the NVIDIA GB300 NVL72 connect 72 GPUs with NVLink so they behave like one giant accelerator.</li>
+          <li><strong>Two phases, two bottlenecks.</strong> <em>Prefill</em> reads your whole prompt at once and is limited by compute. <em>Decode</em> writes the answer one token at a time and is limited by memory bandwidth.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:40px;">
+      <div class="card">
+        <h2>Agenda</h2>
+        <div class="table-wrap">
+          <table class="scoreboard-table" style="min-width:0;">
+            <tr><th>Time</th><th>Section</th></tr>
+            <tr><td style="white-space:nowrap">0&ndash;5</td><td>Live demo: Claude Code builds a static site</td></tr>
+            <tr><td style="white-space:nowrap">5&ndash;9</td><td>AI basics: tokens, parameters, training vs. inference</td></tr>
+            <tr><td style="white-space:nowrap">9&ndash;16</td><td>From laptop to data center and back</td></tr>
+            <tr><td style="white-space:nowrap">16&ndash;26</td><td>Inside the AI factory: networks, NVL72, prefill and decode</td></tr>
+            <tr><td style="white-space:nowrap">26&ndash;30</td><td>Recap and Q&amp;A</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <h2>The demo prompt</h2>
+        <div class="prose">
+          <p>We open with this prompt, typed live into Claude Code:</p>
+          <div class="prompt-box">"Make a one-page static site for this AI 101 session with an agenda and a countdown timer."</div>
+          <p>Watch for three things:</p>
+          <ul>
+            <li>The reply <strong>streams in</strong> rather than arriving all at once.</li>
+            <li>Claude Code <strong>asks permission</strong> before writing each file.</li>
+            <li><code>/context</code> shows how many <strong>tokens</strong> travel with every request.</li>
+          </ul>
+          <p>The site you're reading was built the same way.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:40px;">
+      <h2>AI basics in four terms</h2>
+      <div class="stat-grid">
+        <div class="stat"><div class="v">Token</div><div class="l">A chunk of text, often part of a word. Models read and write tokens, not characters.</div></div>
+        <div class="stat"><div class="v">Parameters</div><div class="l">The learned numbers inside a model. Frontier models have hundreds of billions or more.</div></div>
+        <div class="stat"><div class="v">Training</div><div class="l">Months on thousands of GPUs to learn the parameters. Done once per model.</div></div>
+        <div class="stat"><div class="v">Inference</div><div class="l">Using the trained model to answer a prompt. Happens billions of times. This talk is about inference.</div></div>
+      </div>
+      <p class="prose" style="margin-top:16px;">Here is roughly how a model might split the demo prompt into tokens (illustrative; every model has its own tokenizer):</p>
+      <div class="tokens">
+        <span>Make</span><span>&nbsp;a</span><span>&nbsp;one</span><span>-page</span><span>&nbsp;static</span><span>&nbsp;site</span><span>&nbsp;for</span><span>&nbsp;this</span><span>&nbsp;AI</span><span>&nbsp;101</span><span>&nbsp;session</span><span>&nbsp;with</span><span>&nbsp;an</span><span>&nbsp;agenda</span><span>&nbsp;and</span><span>&nbsp;a</span><span>&nbsp;count</span><span>down</span><span>&nbsp;timer</span><span>.</span>
+      </div>
+    </div>
+
+    <p class="section-label">Explore</p>
+    <div class="menu-grid">
+      <a href="journey.html" class="menu-card">
+        <div class="card-icon"><span class="num">1</span></div>
+        <span class="card-label">Prompt Journey</span>
+        <span class="card-sub">Laptop &rarr; data center &rarr; laptop, and the agent loop</span>
+      </a>
+      <a href="nvl72.html" class="menu-card">
+        <div class="card-icon"><span class="num">2</span></div>
+        <span class="card-label">Inside the NVL72</span>
+        <span class="card-sub">72 GPUs, one NVLink domain, prefill and decode</span>
+      </a>
+      <a href="resources.html" class="menu-card">
+        <div class="card-icon"><span class="num">3</span></div>
+        <span class="card-label">Resources</span>
+        <span class="card-sub">Anthropic and NVIDIA docs for going deeper</span>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    NorCal AI 101 &middot; How a prompt travels through an AI factory. Hardware details describe how LLM inference typically works, not a specific provider's deployment.
+  </footer>
+</body>
+</html>
