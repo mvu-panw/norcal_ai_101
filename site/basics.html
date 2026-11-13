@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NorCal AI 101 — The Basics</title>
+  <link rel="icon" type="image/png" href="assets/images/PAN-Color.png" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=4" />
+</head>
+<body>
+  <nav>
+    <img src="assets/images/PAN-Color.png" alt="Palo Alto Networks" class="logo" />
+    <a class="site-title" href="index.html">NorCal AI 101</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="journey.html">Prompt Journey</a>
+      <a href="nvl72.html">Inside the NVL72</a>
+      <a href="glossary.html">Key Terms</a>
+      <a href="resources.html">Resources</a>
+    </div>
+  </nav>
+
+  <main>
+    <div class="page-header">
+      <h1>The Basics</h1>
+      <p>AI, machine learning, deep learning, generative AI and agentic AI, and where Claude Code fits.</p>
+    </div>
+
+    <p class="section-label">How the terms fit together</p>
+    <div class="card" style="margin-bottom:40px;">
+      <div class="rings" role="img" aria-label="Nested diagram: artificial intelligence contains machine learning, which contains deep learning, which contains generative AI">
+        <div class="ring r1">
+          <div class="ring-name">Artificial Intelligence <span class="yr">1950s &rarr;</span></div>
+          <div class="ring-desc">Any technique that lets computers do things that normally need human intelligence.</div>
+          <div class="ring r2">
+            <div class="ring-name">Machine Learning <span class="yr">1980s &rarr;</span></div>
+            <div class="ring-desc">AI that learns patterns from data instead of following hand-written rules.</div>
+            <div class="ring r3">
+              <div class="ring-name">Deep Learning <span class="yr">~2010 &rarr;</span></div>
+              <div class="ring-desc">Machine learning with deep neural networks that discover their own features.</div>
+              <div class="ring r4">
+                <div class="ring-name">Generative AI <span class="yr">2017 &rarr;</span></div>
+                <div class="ring-desc">Deep learning models, such as large language models (LLMs), that create new content.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="agent-note" style="max-width:760px;margin-left:auto;margin-right:auto;">
+        <strong>Where's agentic AI?</strong> It isn't another ring. Agentic AI is a <em>system</em> built around a generative model: the model does the thinking, and the system around it adds goals, tools, memory and a loop so it can take actions. Claude Code is one of these systems.
+      </div>
+    </div>
+
+    <p class="section-label">Quick definitions</p>
+    <div class="term-grid" style="margin-bottom:40px;">
+      <div class="term">
+        <h3>Artificial intelligence (AI)</h3>
+        <p>The broad goal of making computers do things that normally take <strong>human intelligence</strong>: recognizing images, understanding language, making decisions. Early AI (1950s onward) was mostly hand-written rules and game playing, like checkers.</p>
+      </div>
+      <div class="term">
+        <h3>Machine learning (ML)</h3>
+        <p>Instead of writing rules, you <strong>show the computer examples</strong> and it learns the pattern with statistics. The catch: <strong>people still decide which features matter</strong>. A classic example is the email spam filter, which learned from word counts that a human chose to track.</p>
+      </div>
+      <div class="term">
+        <h3>Deep learning (DL)</h3>
+        <p>Machine learning with <strong>deep neural networks</strong>: many layers of simple artificial "neurons." The big difference is that the network <strong>learns its own features</strong> from raw data, with no human-designed feature extractors. It took off around 2010 thanks to <strong>GPUs, big datasets and better algorithms</strong>. In 2012, AlexNet won the ImageNet challenge after training on GPUs.</p>
+      </div>
+      <div class="term">
+        <h3>Generative AI</h3>
+        <p>Deep learning models that <strong>create new content</strong>: text, code, images, audio. Large language models are built on the <strong>transformer</strong> (2017), pre-trained on huge amounts of unlabeled text, and work by <strong>predicting the next token</strong>, one at a time. When Claude writes the HTML for our demo site, that's generative AI.</p>
+      </div>
+      <div class="term">
+        <h3>Agentic AI</h3>
+        <p>AI that doesn't just answer but <strong>gets a job done</strong>: it breaks a goal into a plan, uses <strong>tools</strong> (search, code, files, databases), checks the results, and keeps going until the task is finished. It has guardrails, and a human approves the risky steps.</p>
+      </div>
+      <div class="term">
+        <h3>ML vs. DL in one line</h3>
+        <p><strong>Machine learning:</strong> humans choose the features, and the model learns the weights.<br /><strong>Deep learning:</strong> the model learns the features <em>and</em> the weights, but it needs far more data and compute. That's why GPUs matter.</p>
+      </div>
+    </div>
+
+    <div class="two-col" style="margin-bottom:40px;">
+      <div class="card">
+        <h2>How a neural network learns</h2>
+        <ol class="steps">
+          <li><div><strong>Guess.</strong> Feed in a labeled example, like a photo marked "cat." The network outputs a guess with a confidence score.</div></li>
+          <li><div><strong>Compare.</strong> Check the guess against the label.</div></li>
+          <li><div><strong>Adjust.</strong> Strengthen the connections (weights) that led to a right answer and weaken the ones that led to a wrong one.</div></li>
+          <li><div><strong>Repeat.</strong> After one pass through the data it's barely better than a coin flip. Many passes later, it's accurate.</div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>Training vs. inference</h2>
+        <div class="table-wrap">
+          <table class="scoreboard-table" style="min-width:0;">
+            <tr><th></th><th>Training</th><th>Inference</th></tr>
+            <tr><td>What</td><td>Learning the weights from data</td><td>Using the trained model on new input</td></tr>
+            <tr><td>How often</td><td>Once per model (weeks to months)</td><td>Every prompt, billions of times</td></tr>
+            <tr><td>Compute</td><td>The heaviest workload in AI</td><td>Lighter per request, but at enormous scale</td></tr>
+          </table>
+        </div>
+        <p class="note">This talk follows <strong>inference</strong>: what happens to one prompt. <a class="src" href="journey.html">Prompt Journey &rarr;</a></p>
+      </div>
+    </div>
+
+    <p class="section-label">Waves of AI</p>
+    <div class="card" style="margin-bottom:40px;">
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-when">1950s</div><div class="tl-what">AI</div><div class="tl-desc">Rules and game playing</div></div>
+        <div class="tl-item"><div class="tl-when">1980s</div><div class="tl-what">Machine learning</div><div class="tl-desc">Statistics on human-chosen features</div></div>
+        <div class="tl-item"><div class="tl-when">2012</div><div class="tl-what">AlexNet</div><div class="tl-desc">Deep learning on GPUs wins ImageNet</div></div>
+        <div class="tl-item"><div class="tl-when">2017</div><div class="tl-what">Transformer</div><div class="tl-desc">The architecture behind LLMs</div></div>
+        <div class="tl-item"><div class="tl-when">2022</div><div class="tl-what">ChatGPT</div><div class="tl-desc">Generative AI goes mainstream</div></div>
+        <div class="tl-item now"><div class="tl-when">Now</div><div class="tl-what">Agentic AI</div><div class="tl-desc">AI that plans and takes actions</div></div>
+        <div class="tl-item"><div class="tl-when">Next</div><div class="tl-what">Physical AI</div><div class="tl-desc">Robots that sense and act in the real world</div></div>
+      </div>
+      <p class="note">Source: NVIDIA AI Infrastructure and Operations Fundamentals course, Units 2 and 3.</p>
+    </div>
+
+    <p class="section-label">So what is Claude Code?</p>
+    <div class="banner">
+      <strong>Both generative and agentic.</strong> Generative AI writes the answer. Agentic AI does the job. Claude Code is a generative model running inside an agent.
+    </div>
+
+    <div class="two-col" style="margin-bottom:24px;">
+      <div class="card">
+        <h2>The model: generative AI</h2>
+        <div class="prose">
+          <ul>
+            <li><strong>Claude</strong>, running in a data center</li>
+            <li>Reads the prompt and <strong>writes tokens</strong>: text, code, or a request to use a tool</li>
+            <li>Never touches your laptop or your files</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Claude Code: the agent</h2>
+        <div class="prose">
+          <ul>
+            <li>Runs <strong>on your laptop</strong></li>
+            <li>Gives the model a goal and a set of <strong>tools</strong>, then runs them when asked</li>
+            <li>Feeds the results back and <strong>loops</strong> until the job is done</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:40px;">
+      <h2>Checking Claude Code against NVIDIA's definition of an agent</h2>
+      <div class="table-wrap">
+        <table class="scoreboard-table">
+          <tr><th>What makes an agent (NVIDIA course)</th><th>What it means</th><th>Where you see it in Claude Code</th></tr>
+          <tr><td>Planning</td><td>Breaks a goal into a task list</td><td>The to-do list it writes before multi-step work</td></tr>
+          <tr><td>Tools</td><td>Search, databases, code, calculations</td><td>Read, Write, Edit, Bash, web search</td></tr>
+          <tr><td>Guardrails</td><td>Hands risky decisions to a human</td><td>Permission prompts before writing files or running commands</td></tr>
+          <tr><td>Memory</td><td>Remembers what it has done</td><td>CLAUDE.md and the conversation history</td></tr>
+          <tr><td>Self-critique</td><td>Checks its own work and re-plans</td><td>Reads errors and test output, then fixes its own mistakes</td></tr>
+        </table>
+      </div>
+      <div class="cta-row">
+        <a href="journey.html" class="btn btn-primary" style="width:auto;">See it in action: the Prompt Journey &rarr;</a>
+      </div>
+    </div>
+
+    <p class="section-label">Go deeper</p>
+    <div class="link-grid">
+      <a class="link-card" href="https://www.nvidia.com/en-us/glossary/machine-learning/" target="_blank" rel="noopener">
+        <span class="lc-title">What is machine learning?</span>
+        <span class="lc-desc">NVIDIA glossary entry on ML.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/glossary/deep-learning/" target="_blank" rel="noopener">
+        <span class="lc-title">What is deep learning?</span>
+        <span class="lc-desc">NVIDIA glossary entry on neural networks and DL.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/glossary/generative-ai/" target="_blank" rel="noopener">
+        <span class="lc-title">What is generative AI?</span>
+        <span class="lc-desc">NVIDIA glossary entry on generative AI.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.nvidia.com/en-us/glossary/ai-agents/" target="_blank" rel="noopener">
+        <span class="lc-title">What are AI agents?</span>
+        <span class="lc-desc">NVIDIA glossary entry on agentic AI.</span>
+        <span class="lc-meta">nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.anthropic.com/research/building-effective-agents" target="_blank" rel="noopener">
+        <span class="lc-title">Building effective agents</span>
+        <span class="lc-desc">Anthropic on how agents differ from fixed workflows.</span>
+        <span class="lc-meta">anthropic.com</span>
+      </a>
+      <a class="link-card" href="https://blogs.nvidia.com/blog/difference-deep-learning-training-inference-ai/" target="_blank" rel="noopener">
+        <span class="lc-title">Training vs. inference</span>
+        <span class="lc-desc">NVIDIA blog on the two phases of deep learning.</span>
+        <span class="lc-meta">blogs.nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://blogs.nvidia.com/blog/what-are-large-language-models-used-for/" target="_blank" rel="noopener">
+        <span class="lc-title">What are large language models used for?</span>
+        <span class="lc-desc">NVIDIA blog on LLMs and their uses.</span>
+        <span class="lc-meta">blogs.nvidia.com</span>
+      </a>
+      <a class="link-card" href="https://www.ibm.com/think/topics/machine-learning" target="_blank" rel="noopener">
+        <span class="lc-title">What is machine learning?</span>
+        <span class="lc-desc">IBM's explainer on ML, DL and how they relate.</span>
+        <span class="lc-meta">ibm.com</span>
+      </a>
+      <a class="link-card" href="https://www.sas.com/en_us/insights/analytics/machine-learning.html" target="_blank" rel="noopener">
+        <span class="lc-title">Machine learning: what it is and why it matters</span>
+        <span class="lc-desc">SAS overview of ML methods and uses.</span>
+        <span class="lc-meta">sas.com</span>
+      </a>
+      <a class="link-card" href="https://mikeovu.github.io/nca-aiio/essential-ai-knowledge.html" target="_blank" rel="noopener">
+        <span class="lc-title">NCA-AIIO Study Hub: Essential AI Knowledge</span>
+        <span class="lc-desc">Exam objectives, course unit summaries and readings for NVIDIA's AI Infrastructure and Operations certification.</span>
+        <span class="lc-meta">mikeovu.github.io</span>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    NorCal AI 101 &middot; How a prompt travels through an AI factory. Hardware details describe how LLM inference typically works, not a specific provider's deployment.
+  </footer>
+</body>
+</html>

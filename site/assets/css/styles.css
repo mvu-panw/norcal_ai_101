@@ -606,3 +606,47 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .ds:hover { background: rgba(0,192,232,0.18); border-color: var(--cyan); }
 .ds::after { content: "\2197"; font-size: 0.75em; }
 .ds.alt { border-color: rgba(123,47,190,0.6); color: #C9A6F0; background: rgba(123,47,190,0.12); }
+
+/* ── The Basics page ── */
+.rings { max-width: 760px; margin: 0 auto; }
+.ring {
+  border-radius: 18px; padding: 18px 20px 20px; border: 1px solid rgba(0,192,232,0.35);
+  background: rgba(0,192,232,0.04);
+}
+.ring .ring { margin-top: 14px; }
+.ring.r2 { border-color: rgba(60,140,220,0.45); background: rgba(60,140,220,0.06); }
+.ring.r3 { border-color: rgba(100,90,210,0.55); background: rgba(100,90,210,0.08); }
+.ring.r4 { border-color: rgba(123,47,190,0.75); background: rgba(123,47,190,0.14); }
+.ring-name { font-weight: 700; font-size: 1rem; }
+.ring-name .yr { font-weight: 500; font-size: 0.75rem; color: var(--muted); margin-left: 8px; }
+.ring-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.5; margin-top: 4px; }
+.agent-note {
+  margin-top: 16px; border: 1px dashed rgba(0,192,232,0.5); border-radius: 12px; padding: 14px 18px;
+  color: var(--muted); font-size: 0.88rem; line-height: 1.6;
+}
+.agent-note strong { color: var(--cyan); }
+
+.timeline { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; position: relative; }
+.timeline::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: var(--gradient); opacity: 0.6;
+}
+.tl-item { position: relative; padding-top: 24px; }
+.tl-item::before {
+  content: ""; position: absolute; top: 0; left: 0; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--cyan);
+}
+.tl-item.now::before { background: var(--cyan); box-shadow: 0 0 12px rgba(0,192,232,0.6); }
+.tl-when { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+.tl-what { color: var(--cyan); font-size: 0.8rem; font-weight: 600; margin-top: 2px; }
+.tl-desc { color: var(--muted); font-size: 0.78rem; line-height: 1.45; margin-top: 4px; }
+
+@media (max-width: 860px) {
+  .timeline { grid-template-columns: 1fr; gap: 16px; padding-left: 28px; }
+  .timeline::before { left: 7px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; }
+  .tl-item { padding-top: 0; }
+  .tl-item::before { left: -28px; top: 2px; }
+}
+@media (max-width: 600px) {
+  .ring { padding: 14px 12px 14px; }
+  .ring .ring { margin-top: 10px; }
+}
