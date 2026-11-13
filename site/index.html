@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NorCal AI 101 — Home</title>
   <link rel="icon" type="image/png" href="assets/images/PAN-Color.png" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=4" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=5" />
 </head>
 <body>
   <nav>
@@ -25,6 +25,14 @@
       <h1>What Happens When You Hit Enter?</h1>
       <p>A 30-minute tour of one AI prompt, from a laptop to an AI factory and back.</p>
     </div>
+
+    <figure class="video-card">
+      <video class="video-frame" src="assets/video/claude_code_prompt_flow.mp4" poster="assets/video/claude_code_prompt_flow_poster.jpg"
+             autoplay muted loop playsinline controls preload="metadata"
+             aria-label="Animation: a Claude Code prompt travels from the laptop over HTTPS to the API front door and into an AI factory, where it is tokenized, prefilled and decoded, then streams back">
+      </video>
+      <figcaption>From your laptop to the AI factory: one Claude Code request, start to finish (28 seconds). <a class="src" href="journey.html">Step-by-step version &rarr;</a></figcaption>
+    </figure>
 
     <div class="card" style="margin-bottom:32px;">
       <p style="font-weight:600;font-size:1.15rem;margin-bottom:14px;color:var(--cyan);">The 30-second version</p>
@@ -118,5 +126,14 @@
   <footer>
     NorCal AI 101 &middot; How a prompt travels through an AI factory. Hardware details describe how LLM inference typically works, not a specific provider's deployment.
   </footer>
+  <script>
+    // Respect reduced-motion settings: don't autoplay the looping animation.
+    (function () {
+      var v = document.querySelector('.video-frame');
+      if (v && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        v.removeAttribute('autoplay'); v.pause();
+      }
+    })();
+  </script>
 </body>
 </html>

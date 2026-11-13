@@ -650,3 +650,12 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .ring { padding: 14px 12px 14px; }
   .ring .ring { margin-top: 10px; }
 }
+
+/* ── Home page video ── */
+.video-card { margin: -16px 0 36px; }
+.video-frame {
+  display: block; width: 100%; aspect-ratio: 16 / 9; background: #000;
+  border: 1px solid rgba(63,95,172,0.35); border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(0,192,232,0.10);
+}
+.video-card figcaption { color: var(--muted); font-size: 0.82rem; text-align: center; margin-top: 12px; line-height: 1.5; }
