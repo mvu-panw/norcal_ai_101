@@ -595,3 +595,14 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 .term .term-src a:hover { text-decoration: underline; }
 .gl-empty { display: none; text-align: center; color: var(--muted); padding: 40px 0; }
 @media (max-width: 600px) { .term-grid { grid-template-columns: 1fr; } }
+.term .term-ds { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.term .term-ds .ds-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-right: 2px; }
+.ds {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 0.74rem; font-weight: 500;
+  padding: 4px 10px; border-radius: 20px; text-decoration: none;
+  border: 1px solid rgba(0,192,232,0.45); color: var(--cyan); background: rgba(0,192,232,0.07);
+  transition: background 0.2s, border-color 0.2s;
+}
+.ds:hover { background: rgba(0,192,232,0.18); border-color: var(--cyan); }
+.ds::after { content: "\2197"; font-size: 0.75em; }
+.ds.alt { border-color: rgba(123,47,190,0.6); color: #C9A6F0; background: rgba(123,47,190,0.12); }
