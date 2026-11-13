@@ -566,3 +566,32 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .card { padding: 20px; }
   .two-col { grid-template-columns: 1fr; }
 }
+
+/* ── Key Terms page ── */
+.gl-tools { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+.gl-search {
+  width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 18px; color: var(--text); font-family: var(--font); font-size: 1rem; outline: none;
+}
+.gl-search:focus { border-color: var(--cyan); }
+.gl-search::placeholder { color: #5a5c68; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  font-size: 0.8rem; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border);
+  color: var(--muted); text-decoration: none; background: var(--surface); transition: border-color 0.2s, color 0.2s;
+}
+.chip:hover { border-color: var(--cyan); color: var(--cyan); }
+.gl-section { margin-bottom: 44px; scroll-margin-top: 90px; }
+.gl-section h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
+.gl-section > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 18px; line-height: 1.6; }
+.term-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.term { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 22px; scroll-margin-top: 90px; }
+.term h3 { font-size: 1.02rem; font-weight: 600; color: var(--cyan); margin-bottom: 8px; }
+.term p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+.term p strong { color: var(--text); }
+.term .spec { margin-top: 10px; font-size: 0.78rem; color: #C9A6F0; line-height: 1.5; }
+.term .term-src { margin-top: 10px; font-size: 0.75rem; }
+.term .term-src a { color: var(--cyan); text-decoration: none; margin-right: 10px; }
+.term .term-src a:hover { text-decoration: underline; }
+.gl-empty { display: none; text-align: center; color: var(--muted); padding: 40px 0; }
+@media (max-width: 600px) { .term-grid { grid-template-columns: 1fr; } }

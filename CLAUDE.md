@@ -6,17 +6,22 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A 30-minute "AI 101" talk on how a prompt travels from a laptop (Claude Code) to an AI factory (NVIDIA GB300 NVL72) and back. It holds a static companion site plus local reference material from NVIDIA's *AI Infrastructure and Operations Fundamentals* course.
 
-**Public repo:** `github.com/mvu-panw/norcal_ai_101` (branch `main`). `.github/workflows/pages.yml` publishes only `site/` to GitHub Pages. One-time manual step: Settings → Pages → Source = "GitHub Actions". `.gitignore` keeps all reference folders (`NVIDIA Datasheets/`, `NVIDIA Stencils/`, `nvidia_course_content/`, `palo_docs/`) out of git: they are NVIDIA/PANW material that isn't ours to republish. Never commit them.
+**Public repo:** `github.com/mvu-panw/norcal_ai_101` (branch `main`). `.github/workflows/pages.yml` publishes only `site/` to GitHub Pages. One-time manual step: Settings → Pages → Source = "GitHub Actions". `.gitignore` keeps all reference folders (`NVIDIA Datasheets/`, `NVIDIA Stencils/`, `nvidia_course_content/`, `palo_docs/`, `reference_text/`) out of git: they are NVIDIA/PANW material that isn't ours to republish. Never commit them.
 
 ```bash
-python3 -m http.server 8080 --directory site    # preview; no build step
+python3 -m http.server 8600 --directory site    # preview; no build step
+python3 -I tools/scrape.py URL [URL ...]        # save an NVIDIA page as text to reference_text/nvidia_pages/ (skips existing files)
+pdftotext -layout "NVIDIA Datasheets/X.pdf" reference_text/datasheets/X.txt
 ```
+
+`reference_text/` holds greppable text of every datasheet plus scraped nvidia.com, developer.nvidia.com and docs.nvidia.com pages. Grep it before searching the web. `scrape.py` fetches with `curl` because the python.org Python on this Mac has no CA bundle.
 
 ## Site (`site/`)
 
-- 4 pages: `index` (summary, agenda, demo prompt, AI basics), `journey` (laptop → API → serving cluster, the tool-use agent loop, prompt caching), `nvl72` (four networks, path into the rack, rack diagram, prefill vs. decode), `resources` (Anthropic + NVIDIA doc links).
+- 5 pages: `index` (summary, agenda, demo prompt, AI basics), `journey` (laptop → API → serving cluster, the tool-use agent loop, prompt caching), `nvl72` (four networks, path into the rack, rack diagram, prefill vs. decode), `glossary` (Key Terms: ~50 infrastructure terms in 7 sections, GPU and NVLink comparison tables, inline search script), `resources` (Anthropic + NVIDIA doc links).
+- Glossary specs must come from `reference_text/`. Label sparse vs. dense FLOPS, and mark Rubin numbers as projections.
 - **UI is copied from `~/lambda/site`** (itself from `~/ai_sec_by_design`): cyan/purple gradient, Inter font. `site/assets/css/styles.css` is the base template, then the lambda site's content classes (`.prose`, `.two-col`, `.link-card`…), then a block marked "AI 101 additions" (`.flow`, `.steps`, `pre.code`, `.stat-grid`, `.rack`, `.tokens`).
-- No templating: nav and footer are copy-pasted into all 4 pages. Each page's `.nav-links` lists the *other* pages. Bump `styles.css?v=1` on every page after CSS edits.
+- No templating: nav and footer are copy-pasted into all 5 pages. Each page's `.nav-links` lists the *other* pages. Bump `styles.css?v=N` (currently 2) on every page after CSS edits.
 - The NVL72 rack diagram in `nvl72.html` is 27 `.tray` divs (10 compute, 9 NVLink switch, 8 compute), simplified.
 - **Accuracy rule:** Anthropic serves Claude on Google TPUs, AWS Trainium and NVIDIA GPUs, and which hardware serves a request isn't public. Always frame the NVL72 content as "how a prompt like this is processed on an NVL72", never "where your prompt went". Hardware numbers come from the GB300 and Vera Rubin NVL72 datasheets in `NVIDIA Datasheets/`.
 
