@@ -23,7 +23,7 @@
   <main>
     <div class="page-header">
       <h1>The Prompt Journey</h1>
-      <p>What happens between typing a prompt into Claude Code and seeing <code>index.html</code> appear on your laptop.</p>
+      <p>What happens between typing a prompt into Claude Code and seeing a dark mode toggle appear on your page.</p>
     </div>
 
     <div class="banner">
@@ -63,13 +63,13 @@
     <p class="section-label">Step by step</p>
     <div class="card" style="margin-bottom:40px;">
       <ol class="steps">
-        <li><div><strong>You type a prompt.</strong> "Make a one-page static site for this AI 101 session with an agenda and a countdown timer."</div></li>
+        <li><div><strong>You type a prompt.</strong> "Add a dark mode toggle to this page."</div></li>
         <li><div><strong>Claude Code packages it.</strong> Your few words become thousands of tokens. The package includes Claude Code's own instructions, a description of every tool it can use (Read, Write, Edit, Bash, and others), your project's CLAUDE.md, and the conversation so far. Run <code>/context</code> to see the total.</div></li>
         <li><div><strong>It goes to the data center.</strong> The request is sent as an encrypted HTTPS POST to Anthropic's API. After authentication and rate limiting, it lands on a cluster that serves the model.</div></li>
         <li><div><strong>The model reads, then writes.</strong> The text is split into tokens. The model reads all of them in one parallel pass (<em>prefill</em>), then generates its reply one token at a time (<em>decode</em>), streaming each token back as it's produced.</div></li>
-        <li><div><strong>The reply is a tool call, not a file.</strong> Instead of plain text, the model returns a structured <code>tool_use</code> block: "call Write with this path and this content."</div></li>
-        <li><div><strong>Your laptop does the work.</strong> Claude Code asks your permission, writes the file to your disk, and sends the result back as a new request. That new request includes everything from step 2 plus the latest exchange.</div></li>
-        <li><div><strong>Repeat until done.</strong> The loop continues until the model answers in plain text with no more tool calls. Even a "simple" site can take several round trips.</div></li>
+        <li><div><strong>The reply is a tool call, not a file.</strong> Instead of plain text, the model returns a structured <code>tool_use</code> block: "call Edit on <code>index.html</code>: replace this text with that text."</div></li>
+        <li><div><strong>Your laptop does the work.</strong> Claude Code asks your permission, edits the file on your disk, and sends the result back as a new request. That new request includes everything from step 2 plus the latest exchange.</div></li>
+        <li><div><strong>Repeat until done.</strong> The loop continues until the model answers in plain text with no more tool calls. Even a "simple" change can take several round trips.</div></li>
       </ol>
     </div>
 
@@ -88,7 +88,7 @@
   ],
   <span class="k">"messages"</span>: [
     { "role": "user",
-      "content": "Make a one-page static site..." }
+      "content": "Add a dark mode toggle to this page." }
   ]
 }</pre>
       </div>
@@ -98,17 +98,18 @@
   <span class="k">"role"</span>: "assistant",
   <span class="k">"content"</span>: [
     { "type": "text",
-      "text": "I'll create the page." },
+      "text": "I'll add the toggle." },
     { "type": "<span class="k">tool_use</span>",
-      "name": "Write",
+      "name": "Edit",
       "input": {
         "file_path": "index.html",
-        "content": "&lt;!DOCTYPE html&gt;..."
+        "old_string": "&lt;/nav&gt;",
+        "new_string": "&lt;button id=\"theme\"&gt;...&lt;/nav&gt;"
       } }
   ],
   <span class="k">"stop_reason"</span>: "tool_use"
 }</pre>
-        <p class="note">Claude Code then sends a <code>tool_result</code> ("file created") in the next request, and the loop continues.</p>
+        <p class="note">Claude Code then sends a <code>tool_result</code> ("file updated") in the next request, and the loop continues.</p>
       </div>
     </div>
 
@@ -117,9 +118,9 @@
       <div class="table-wrap">
         <table class="scoreboard-table">
           <tr><th>Round trip</th><th>Model asks for</th><th>Laptop does</th><th>Sent back next time</th></tr>
-          <tr><td>1</td><td><code>Write</code> index.html</td><td>Asks permission, writes the file</td><td>"File created"</td></tr>
-          <tr><td>2</td><td><code>Write</code> styles.css</td><td>Writes the stylesheet</td><td>"File created"</td></tr>
-          <tr><td>3</td><td><code>Bash</code> <code>open index.html</code></td><td>Opens the page in a browser</td><td>Command output</td></tr>
+          <tr><td>1</td><td><code>Read</code> index.html</td><td>Reads the page from disk</td><td>The file's contents</td></tr>
+          <tr><td>2</td><td><code>Edit</code> styles.css</td><td>Asks permission, adds dark colors</td><td>"File updated"</td></tr>
+          <tr><td>3</td><td><code>Edit</code> index.html</td><td>Adds the toggle button and script</td><td>"File updated"</td></tr>
           <tr><td>4</td><td>Nothing: plain-text summary</td><td>Shows the summary</td><td>Loop ends</td></tr>
         </table>
       </div>
