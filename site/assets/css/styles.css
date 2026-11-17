@@ -685,3 +685,36 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   .pdf-actions .btn { flex: 1 1 auto; }
   .pdf-frame { height: 70vh; min-height: 420px; }
 }
+
+/* ── Dark mode toggle + light theme (dark is the default) ── */
+.theme-toggle {
+  margin-left: 8px; width: 36px; height: 36px; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); font-size: 1.05rem; line-height: 1; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.theme-toggle:hover, .theme-toggle:focus-visible { border-color: var(--cyan); color: var(--cyan); outline: none; }
+
+:root[data-theme="light"] {
+  --bg:      #F5F6FA;
+  --surface: #FFFFFF;
+  --border:  #DCDFE8;
+  --cyan:    #007A96;
+  --text:    #12131C;
+  --muted:   #555A6B;
+  color-scheme: light;
+}
+:root[data-theme="light"] nav { background: rgba(245,246,250,0.88); }
+:root[data-theme="light"] .slide-nav { background: rgba(255,255,255,0.8); }
+:root[data-theme="light"] .flow-return,
+:root[data-theme="light"] .tray.switch,
+:root[data-theme="light"] .term .spec,
+:root[data-theme="light"] .ds.alt { color: #6B2AA8; }
+:root[data-theme="light"] pre.code { color: #2A2C38; }
+:root[data-theme="light"] pre.code .c { color: #7A7D8C; }
+:root[data-theme="light"] .rack { background: #EEF0F6; border-color: #C9CDDA; }
+:root[data-theme="light"] .tokens span:nth-child(3n) { background: rgba(0,0,0,0.04); }
+:root[data-theme="light"] .scoreboard-table tr:hover td { background: rgba(0,0,0,0.03); }
+:root[data-theme="light"] .gl-search::placeholder,
+:root[data-theme="light"] .form-group input::placeholder { color: #8A8D9A; }
