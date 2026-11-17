@@ -18,14 +18,22 @@ pdftotext -layout "NVIDIA Datasheets/X.pdf" reference_text/datasheets/X.txt
 
 ## Site (`site/`)
 
-- 6 pages: `index` (prompt-flow video, summary, demo prompt, AI basics), `basics` (AI ⊃ ML ⊃ DL ⊃ generative AI rings diagram, quick definitions, how a neural network learns, waves-of-AI timeline, Claude Code as generative + agentic mapped to NVIDIA's agent traits; content from `nvidia_course_content/notes` Units 2–3), `journey` (laptop → API → serving cluster, the tool-use agent loop, prompt caching), `nvl72` (four networks, path into the rack, rack diagram, prefill vs. decode), `glossary` (Key Terms: ~50 infrastructure terms in 7 sections, GPU and NVLink comparison tables, inline search script), `resources` (Anthropic + NVIDIA doc links).
+- 6 pages: `index` (prompt-flow video, summary, demo prompt, AI basics), `basics` (AI ⊃ ML ⊃ DL ⊃ generative AI rings diagram, quick definitions, how a neural network learns, waves-of-AI timeline, Claude Code as generative + agentic mapped to NVIDIA's agent traits; content from `nvidia_course_content/notes` Units 2–3), `journey` (laptop → API → serving cluster, the tool-use agent loop, prompt caching), `nvl72` (four networks, path into the rack, rack diagram, GB300 vs. Vera Rubin rack offerings with the two layout PNGs, prefill vs. decode), `glossary` (Key Terms: ~50 infrastructure terms in 7 sections, GPU and NVLink comparison tables, inline search script), `resources` (embedded "Life of a packet" PDF from `assets/docs/` with open-in-new-tab and download buttons, then Anthropic + NVIDIA doc links).
 - Glossary specs must come from `reference_text/`. Label sparse vs. dense FLOPS, and mark Rubin numbers as projections.
 - **UI is copied from `~/lambda/site`** (itself from `~/ai_sec_by_design`): cyan/purple gradient, Inter font. `site/assets/css/styles.css` is the base template, then the lambda site's content classes (`.prose`, `.two-col`, `.link-card`…), then a block marked "AI 101 additions" (`.flow`, `.steps`, `pre.code`, `.stat-grid`, `.rack`, `.tokens`).
-- No templating: nav and footer are copy-pasted into all 6 pages. Each page's `.nav-links` lists the *other* pages. Bump `styles.css?v=N` (currently 5) on every page after CSS edits.
+- No templating: nav and footer are copy-pasted into all 6 pages. Each page's `.nav-links` lists the *other* pages. Bump `styles.css?v=N` (currently 9) on every page after CSS edits.
 - The NVL72 rack diagram in `nvl72.html` is 27 `.tray` divs (10 compute, 9 NVLink switch, 8 compute), simplified.
 - **Accuracy rule:** Anthropic serves Claude on Google TPUs, AWS Trainium and NVIDIA GPUs, and which hardware serves a request isn't public. Always frame the NVL72 content as "how a prompt like this is processed on an NVL72", never "where your prompt went". Hardware numbers come from the GB300 and Vera Rubin NVL72 datasheets in `NVIDIA Datasheets/`.
 
+## Talk media (outside `site/`, tracked in git, not published)
+
+- `videos/`: the talk's numbered segment clips (`01_AI_101_Title.mp4`, `02_claude_code_prompt_flow.mp4`, …). The site embeds its own copy at `site/assets/video/claude_code_prompt_flow.mp4` (plus a poster JPG), so a re-cut clip has to be copied there too.
+- `images/`: source diagrams. Any image a page uses gets copied into `site/assets/images/`, because only `site/` deploys.
+- `logos/`: vendor logos (Claude Code, Cursor, Google Antigravity) for slides. They are third-party brand assets in a public repo, so don't add more without checking that their usage terms allow it.
+
 ## Reference layout
+
+- `palo_docs/`: PANW PDFs (AI Factory Security Blueprint, Prisma AIRS datasheet). Gitignored like the NVIDIA material.
 
 - `nvidia_course_content/transcripts/`: raw course video transcripts. Each file is one long paragraph of text (with stray zero-width characters). `Module_1/` covers Units 2–5, `Module_2/` covers Units 6–12, and the Unit 13 and 14 transcripts sit loose at the top level. File names don't always match the note names (`nvidia_networking_porfolio.md` is misspelled, and some end in `_transcript`).
 - `nvidia_course_content/notes/`: cleaned study notes, one per transcript, in kebab-case. These are the main thing you edit.

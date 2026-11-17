@@ -659,3 +659,29 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
   box-shadow: 0 12px 40px rgba(0,192,232,0.10);
 }
 .video-card figcaption { color: var(--muted); font-size: 0.82rem; text-align: center; margin-top: 12px; line-height: 1.5; }
+
+/* ── NVL72 rack offerings (diagram figures) ── */
+.rack-figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin: 8px 0 24px; }
+.rack-fig { margin: 0; display: flex; flex-direction: column; }
+.rack-fig .fig-tag { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--cyan); margin-bottom: 4px; }
+.rack-fig h3 { font-size: 1.05rem; margin: 0 0 10px; }
+.rack-fig a.fig-img { display: block; background: #fff; border-radius: var(--radius); padding: 6px; border: 1px solid rgba(63,95,172,0.35); }
+.rack-fig img { display: block; width: 100%; height: auto; border-radius: calc(var(--radius) - 4px); }
+.rack-fig figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 10px; line-height: 1.55; }
+
+/* ── Resources: embedded PDF ── */
+.pdf-card { margin-bottom: 40px; }
+.pdf-head { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+.pdf-head > div:first-child { flex: 1 1 320px; }
+.pdf-head .note { margin-top: 0; }
+.pdf-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.pdf-actions .btn { padding: 10px 18px; font-size: 0.88rem; }
+.pdf-frame {
+  display: block; width: 100%; height: 80vh; min-height: 520px; background: #fff;
+  border: 1px solid rgba(63,95,172,0.35); border-radius: 8px;
+}
+@media (max-width: 600px) {
+  .pdf-actions { width: 100%; }
+  .pdf-actions .btn { flex: 1 1 auto; }
+  .pdf-frame { height: 70vh; min-height: 420px; }
+}

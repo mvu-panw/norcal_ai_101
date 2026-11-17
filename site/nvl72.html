@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NorCal AI Infrastructure 101 — Inside the NVL72</title>
   <link rel="icon" type="image/png" href="assets/images/PAN-Color.png" />
-  <link rel="stylesheet" href="assets/css/styles.css?v=5" />
+  <link rel="stylesheet" href="assets/css/styles.css?v=9" />
 </head>
 <body>
   <nav>
@@ -105,6 +105,41 @@
           <p class="note">Source: NVIDIA GB300 NVL72 datasheet. <a class="src" href="https://www.nvidia.com/en-us/data-center/gb300-nvl72/" target="_blank" rel="noopener">product page</a></p>
         </div>
       </div>
+    </div>
+
+    <p class="section-label">Two rack offerings from AI infrastructure providers</p>
+    <div class="card" style="margin-bottom:40px;">
+      <h2>GB300 NVL72 today, Vera Rubin NVL72 next</h2>
+      <div class="prose">
+        <p>When AI infrastructure providers (cloud providers and GPU clouds) sell rack-scale AI compute, it comes down to two main offerings: the <strong>GB300 NVL72</strong>, built on Blackwell Ultra, and the next-generation <strong>Vera Rubin NVL72</strong>. Both use the same rack design: compute trays above and below a bank of NVLink switch trays, with power shelves and a liquid cooling manifold. What changes is the silicon inside each compute tray.</p>
+      </div>
+      <div class="rack-figs">
+        <figure class="rack-fig">
+          <span class="fig-tag">Shipping now</span>
+          <h3>GB300 NVL72 (Blackwell Ultra)</h3>
+          <a class="fig-img" href="assets/images/gb300_nvl72_rack_layout.png" target="_blank" rel="noopener"><img src="assets/images/gb300_nvl72_rack_layout.png" width="1600" height="1223" loading="lazy" alt="GB300 NVL72 rack layout: power shelves at top and bottom, an upper group of compute trays each with 2 Grace CPUs, 4 B300 GPUs, a ConnectX-8 NIC for east-west traffic and a BlueField-3 DPU for north-south traffic, 9 NVLink 5 switch trays forming an all-to-all GPU fabric, a lower group of compute trays, and a liquid cooling manifold."></a>
+          <figcaption>Each compute tray holds 2 Grace CPUs and 4 B300 GPUs, plus ConnectX-8 for east-west traffic and BlueField-3 for north-south traffic. Nine NVLink 5 switch trays connect all 72 GPUs.</figcaption>
+        </figure>
+        <figure class="rack-fig">
+          <span class="fig-tag">Next generation</span>
+          <h3>Vera Rubin NVL72 (with BlueField-4)</h3>
+          <a class="fig-img" href="assets/images/gpu_rack_layout_with_bluefield4_dpu.png" target="_blank" rel="noopener"><img src="assets/images/gpu_rack_layout_with_bluefield4_dpu.png" width="1600" height="1223" loading="lazy" alt="Vera Rubin NVL72-style rack layout: top-of-rack switches for compute and storage uplinks, an upper half of compute trays each with 2 Vera CPUs, 4 Rubin GPUs, a ConnectX-9 NIC for east-west traffic and a BlueField-4 DPU for north-south traffic, NVLink switch trays forming an all-to-all GPU fabric, a lower half of compute trays, power shelves, and a liquid cooling manifold."></a>
+          <figcaption>The same design with new parts: Vera CPUs, Rubin GPUs, ConnectX-9 and BlueField-4, linked by NVLink 6. Top-of-rack switches carry the compute and storage uplinks.</figcaption>
+        </figure>
+      </div>
+      <div class="table-wrap">
+        <table class="scoreboard-table">
+          <tr><th>Per compute tray</th><th>GB300 NVL72</th><th>Vera Rubin NVL72</th><th>What it does</th></tr>
+          <tr><td>CPU</td><td>2 &times; Grace</td><td>2 &times; Vera</td><td>Runs the serving software, tokenizes, batches requests</td></tr>
+          <tr><td>GPU</td><td>4 &times; B300</td><td>4 &times; Rubin</td><td>Runs the model: prefill and decode</td></tr>
+          <tr><td>East-west NIC</td><td>ConnectX-8</td><td>ConnectX-9</td><td>GPU-to-GPU traffic between racks (scale-out compute fabric)</td></tr>
+          <tr><td>North-south DPU</td><td>BlueField-3</td><td>BlueField-4</td><td>Front-end traffic in and out: user requests, storage, security</td></tr>
+          <tr><th>Per rack</th><th></th><th></th><th></th></tr>
+          <tr><td>NVLink</td><td>NVLink 5, 130 TB/s</td><td>NVLink 6, 216 TB/s</td><td>All-to-all fabric that makes 72 GPUs act as one</td></tr>
+          <tr><td>GPU memory</td><td>20 TB HBM3E</td><td>20.7 TB HBM4</td><td>Holds model weights and the KV cache</td></tr>
+        </table>
+      </div>
+      <p class="note">For a security audience, the BlueField DPU is the interesting part: it sits on the north-south path, where a prompt enters and leaves the rack. Diagrams are simplified. Specs: NVIDIA GB300 NVL72 and Vera Rubin NVL72 datasheets; Vera Rubin figures are NVIDIA projections. <a class="src" href="glossary.html">Key Terms &rarr;</a></p>
     </div>
 
     <p class="section-label">Two phases of inference</p>
