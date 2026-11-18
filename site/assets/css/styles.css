@@ -718,3 +718,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0
 :root[data-theme="light"] .scoreboard-table tr:hover td { background: rgba(0,0,0,0.03); }
 :root[data-theme="light"] .gl-search::placeholder,
 :root[data-theme="light"] .form-group input::placeholder { color: #8A8D9A; }
+
+/* ── Secure AI page: embedded Google Slides (16:9) ── */
+.slides-frame { height: auto; min-height: 0; aspect-ratio: 16 / 9; }
+@media (max-width: 600px) { .slides-frame { height: auto; min-height: 0; } }
